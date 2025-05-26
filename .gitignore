@@ -1,0 +1,65 @@
+# Build directories
+build/
+bin/
+bin64/
+*.sln
+*.vcxproj*
+*.vcxproj.filters
+x64/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.opensdf
+*.sdf
+*.pdb
+*.obj
+*.tlog
+*.log
+*.idb
+*.ilk
+*.exp
+*.lib
+*.dll
+*.exe
+*.aps
+*.res
+*.sbr
+*.bsc
+*.vsp
+*.psess
+*.user
+*.userosscache
+*.sln.docstates
+*.db
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+*.vs/
+*.vspscc
+*.vssscc
+*.vspcc
+*.vsp
+
+# Dependencies
+extern/CommonLibSSE/
+submodules/
+
+# Visual Studio Code
+.vscode/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

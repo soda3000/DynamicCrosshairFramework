@@ -1,0 +1,10 @@
+[submodule "extern/commonlibsse"]
+	path = extern/commonlibsse
+	url = https://github.com/alandtse/CommonLibVR.git
+	branch = ng
+[submodule "extern/CLibUtil"]
+	path = extern/CLibUtil
+	url = https://github.com/powerof3/CLibUtil.git
+[submodule "extern/imgui"]
+	path = extern/imgui
+	url = https://github.com/ocornut/imgui

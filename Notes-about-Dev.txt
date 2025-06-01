@@ -1,0 +1,25 @@
+In order to build the DLL file (aka the mod), you need the following components:
+
+1. A Build System
+    e.g. CMake
+    Role: Take your CMakeLists.txt and generates build instructions.
+    Analogy: Like a foreman coordinating a construction crew.
+
+2. A Generator
+    e.g. Ninja
+    Role: Tells CMake how to generate the build instructions.
+    Analogy: Like a blueprint that tells the foreman where to allocate the construction crew.
+
+3. A Compiler
+    e.g. MSVC
+    Role: Takes the source code (.cpp) and compiles it into machine code (.obj) and links them into DLL files.
+    Analogy: Like the construction crew that builds the house.
+    How to set up:
+        1. Download the MS C++ Build Tools (https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+        2. In order to use these Tools, you must build by opening the "x64_x86 Cross Tools Command Prompt for VS 2022".
+            - Note: sometimes it helps by running this as Admin in case of access restrictions while building.
+
+4. Optionally, a Package Manager
+    e.g. vcpkg
+    Role: Downloads and integrates third-party libraries and dependencies.
+    Analogy: Like a warehouse that provides the construction crew with the necessary materials.

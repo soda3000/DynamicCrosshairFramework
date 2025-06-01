@@ -4,6 +4,9 @@
 #include "RE/A/Actor.h"
 #include "RE/Skyrim.h"
 
+// Add logger namespace
+namespace logger = SKSE::log;
+
 void CrosshairMonitor::Init() {
     lastCrosshairRef.reset();
     lastTarget.reset();
@@ -20,10 +23,50 @@ void CrosshairMonitor::Init() {
 }
 
 RE::BSEventNotifyControl CrosshairMonitor::ProcessEvent(const SKSE::CrosshairRefEvent* a_event, RE::BSTEventSource<SKSE::CrosshairRefEvent>*) {
-    if (a_event) {
-        RE::TESObjectREFR* newRef = a_event->crosshairRef.get();
-        ProcessReferenceChange(newRef);
-    }
+    if (!a_event) { return RE::BSEventNotifyControl::kContinue; }
+
+    RE::TESObjectREFR* crosshairTarget = a_event->crosshairRef.get();
+    if (!crosshairTarget) { return RE::BSEventNotifyControl::kContinue; }
+    
+    // Process the reference change
+    ProcessReferenceChange(crosshairTarget);
+    
+    // Get interaction type for more detailed processing
+    CrosshairMonitor::InteractionType iType = GetInteractionTypeForRef(crosshairTarget);
+
+    switch (iType) {
+        case CrosshairMonitor::InteractionType::kTalk:
+            // Display talk crosshair TODO
+        case CrosshairMonitor::InteractionType::kOpen:
+            // Display open crosshair TODO
+        case CrosshairMonitor::InteractionType::kActivate:
+            // Display activate crosshair TODO
+        case CrosshairMonitor::InteractionType::kTake:
+            // Display take crosshair TODO
+        case CrosshairMonitor::InteractionType::kHarvest:
+            // Display harvest crosshair TODO
+        case CrosshairMonitor::InteractionType::kSearch:
+            // Display search crosshair TODO
+        case CrosshairMonitor::InteractionType::kSit:
+            // Display sit crosshair TODO
+        case CrosshairMonitor::InteractionType::kSleep:
+            // Display sleep crosshair TODO
+        case CrosshairMonitor::InteractionType::kPickpocket:
+            // Display pickpocket crosshair TODO
+        case CrosshairMonitor::InteractionType::kLockpick:
+            // Display lockpick crosshair TODO
+        case CrosshairMonitor::InteractionType::kLockpickNone:
+            // Display lockpick none crosshair TODO
+        case CrosshairMonitor::InteractionType::kRead:
+            // Display read crosshair TODO
+        case CrosshairMonitor::InteractionType::kDoor:
+            // Display door crosshair TODO
+        case CrosshairMonitor::InteractionType::kSteal:
+            // Display steal crosshair TODO
+        default: // and also kNone
+            // Display default crosshair TODO
+            break;
+    };
     
     return RE::BSEventNotifyControl::kContinue;
 }
@@ -119,9 +162,23 @@ CrosshairMonitor::InteractionType CrosshairMonitor::GetInteractionType() {
 
 RE::TESObjectREFR* CrosshairMonitor::GetCrosshairReference() {
     auto* crosshairData = RE::CrosshairPickData::GetSingleton();
-    if (crosshairData && crosshairData->target) {
-        // Convert handle to TESObjectREFR* using CommonLibSSE's LookupByHandle
-        return crosshairData->target.get().get();
+    if (crosshairData) {
+        // Handle both VR and non-VR versions
+        #if defined(EXCLUSIVE_SKYRIM_FLAT)
+        // Non-VR version
+            if (crosshairData->target) {
+                if (crosshairData->target.get()) {
+                    return crosshairData->target.get().get();
+                }
+            }
+        #else
+            // VR version - use the headset/gamepad target (index 2)
+            if (crosshairData->target[RE::VR_DEVICE::kHeadset]) {
+                if (crosshairData->target[RE::VR_DEVICE::kHeadset].get()) {
+                    return crosshairData->target[RE::VR_DEVICE::kHeadset].get().get();
+                }
+            }
+        #endif
     }
     return nullptr;
 }
@@ -202,6 +259,8 @@ void CrosshairMonitor::PrintInteractionToConsole(RE::TESObjectREFR* ref, Interac
 
 // Get interaction type for a specific reference
 CrosshairMonitor::InteractionType CrosshairMonitor::GetInteractionTypeForRef(RE::TESObjectREFR* ref) {
+    if (!ref) { return InteractionType::kNone; }
+    
     auto flags = GetActivationFlagsForRef(ref);
     if (flags == 0) return InteractionType::kNone;
     
